@@ -1,10 +1,10 @@
+# view.py
 import os
-from controller import Controller
 
 class GameView:
 
-    def __init__(self):
-        self.controller = Controller()
+    def __init__(self, controller):
+        self.controller = controller
 
     @staticmethod
     def display_message(message):
@@ -38,7 +38,7 @@ class GameView:
  ██║     ███████║█████╗  ███████╗███████╗
  ██║     ██╔══██║██╔══╝  ╚════██║╚════██║
  ╚██████╗██║  ██║███████╗███████║███████║
-  ╚═════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
+  ╚═════╝╚═╝  ╚══════╝╚══════╝╚══════╝
       by Christof & Manuel                                 
 """)
         print("""      Welcome to Chess:
