@@ -1,13 +1,13 @@
+import os
+from controller import Controller
+
 class GameView:
 
     def __init__(self):
-        pass
-
+        self.controller = Controller()
 
     @staticmethod
     def display_message(message):
-        # Display a message to the user
-        pass
         """
         Display a message to the user.
         """
@@ -20,8 +20,18 @@ class GameView:
         """
         return input(prompt)
 
+    @staticmethod
+    def clear_console():
+        """
+        Clear the console of unnecessary stuff
+        """
+        if os.name in ['nt', 'dos']:
+            command = 'cls'
+        else:
+            command = 'clear'
+        os.system(command)
+
     def print_menu(self):
-        self.clear_console()
         print(""" 
   ██████╗██╗  ██╗███████╗███████╗███████╗
  ██╔════╝██║  ██║██╔════╝██╔════╝██╔════╝
@@ -36,3 +46,4 @@ class GameView:
       2) Load Game
       3) Exit
 """)
+        self.controller.get_menu_choice()
