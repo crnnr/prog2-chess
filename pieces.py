@@ -15,7 +15,7 @@ class Piece(metaclass=ABCMeta):
         pass
 
     def check_occupied_friendly(self, position, state):
-        
+        """Checks if the given position on the chessboard is occupied by a friendly piece."""
         if position in range(64):
             if state[position] is not None:
                 if state[position].colour == self.player.currently_playing:
@@ -28,7 +28,7 @@ class Piece(metaclass=ABCMeta):
             return False
 
     def check_occupied_hostile(self, position, state):
-        
+        """Checks if the given position on the chessboard is occupied by an enemy piece. """
         if position in range(64):
             if state[position] is not None:
                 if state[position].colour != self.player.currently_playing:
@@ -41,7 +41,7 @@ class Piece(metaclass=ABCMeta):
             return False
 
     def check_occupied(self, position, state):
-        
+        """Checks if a given position on the chessboard is occupied by a piece."""
         if position in range(64):
             if self.check_occupied_hostile(position, state) or self.check_occupied_friendly(position, state):
                 return True
@@ -51,7 +51,7 @@ class Piece(metaclass=ABCMeta):
             return False
 
     def check_linear(self, state):
-        
+        """Checks for allowed moves in a linear direction (up, down, left, right) for the current piece."""
         allowed = []
 
         main_row = math.floor(self.position / 8)
@@ -128,7 +128,7 @@ class Piece(metaclass=ABCMeta):
         return allowed
 
     def check_diagonal(self, state):
-        
+        """Checks for allowed moves in a diagonal direction for the current piece."""
         allowed = []
 
         main_row = math.floor(self.position / 8)
@@ -240,7 +240,16 @@ class Pawn(Piece):
         self.position = position
 
     def set_symbol(self):
-        pass  
+        """
+        Sets the symbol for the chess piece based on its color.
+
+        Returns:
+            str: The Unicode symbol representing the chess piece.
+        """
+        if self.colour == 'White':
+            return '\u265F'
+        else:
+            return '\u2659'
 
     def check_legal_move(self, position):
         pass
@@ -254,7 +263,16 @@ class Rook(Piece):
         self.position = position
 
     def set_symbol(self):
-        pass
+        """
+        Sets the symbol for the chess piece based on its color.
+
+        Returns:
+            str: The Unicode symbol representing the chess piece.
+        """
+        if self.colour == 'White':
+                return '\u265E'
+        else:
+                return '\u2658'
 
     def check_legal_move(self, position):
         pass
@@ -268,7 +286,17 @@ class Knight(Piece):
         self.position = position
 
     def set_symbol(self):
-        pass
+        """
+        Sets the symbol for the chess piece based on its color.
+
+        Returns:
+            str: The Unicode symbol representing the chess piece.
+        """
+        if self.model.show_symbols:
+            if self.colour == 'White':
+                return '\u265E'
+            else:
+                return '\u2658'
 
     def check_legal_move(self, position):
         pass
@@ -282,7 +310,16 @@ class Knight(Piece):
             self.position = position
 
         def set_symbol(self):
-            pass
+            """
+            Sets the symbol for the chess piece based on its color.
+
+            Returns:
+            str: The Unicode symbol representing the chess piece.
+            """
+            if self.colour == 'White':
+                return '\u265D'
+            else:
+                return '\u2657'
 
         def check_legal_move(self, position):
             pass
@@ -296,7 +333,16 @@ class Knight(Piece):
             self.position = position
 
         def set_symbol(self):
-            pass
+            """
+            Sets the symbol for the chess piece based on its color.
+
+            Returns:
+            str: The Unicode symbol representing the chess piece.
+            """
+            if self.colour == 'White':
+                return '\u265B'
+            else:
+                return '\u2655'
 
         def check_legal_move(self, position):
             pass
@@ -310,7 +356,16 @@ class Knight(Piece):
             self.position = position
 
         def set_symbol(self):
-            pass
+            """
+            Sets the symbol for the chess piece based on its color.
+
+            Returns:
+            str: The Unicode symbol representing the chess piece.
+            """
+            if self.colour == 'White':
+                return '\u265A'
+            else:
+                return '\u2654'
 
         def check_legal_move(self, position):
             pass
