@@ -18,7 +18,7 @@ class Piece(metaclass=ABCMeta):
         """Checks if the given position on the chessboard is occupied by a friendly piece."""
         if position in range(64):
             if state[position] is not None:
-                if state[position].colour == self.player.currently_playing:
+                if state[position].color == self.player.currently_playing:
                     return True
                 else:
                     return False
@@ -31,7 +31,7 @@ class Piece(metaclass=ABCMeta):
         """Checks if the given position on the chessboard is occupied by an enemy piece. """
         if position in range(64):
             if state[position] is not None:
-                if state[position].colour != self.player.currently_playing:
+                if state[position].color != self.player.currently_playing:
                     return True
                 else:
                     return False
@@ -246,7 +246,7 @@ class Pawn(Piece):
         Returns:
             str: The Unicode symbol representing the chess piece.
         """
-        if self.colour == 'White':
+        if self.color == 'White':
             return '\u265F'
         else:
             return '\u2659'
@@ -269,7 +269,7 @@ class Rook(Piece):
         Returns:
             str: The Unicode symbol representing the chess piece.
         """
-        if self.colour == 'White':
+        if self.color == 'White':
                 return '\u265E'
         else:
                 return '\u2658'
@@ -292,11 +292,10 @@ class Knight(Piece):
         Returns:
             str: The Unicode symbol representing the chess piece.
         """
-        if self.model.show_symbols:
-            if self.colour == 'White':
-                return '\u265E'
-            else:
-                return '\u2658'
+        if self.color == 'White':
+            return '\u265E'
+        else:
+            return '\u2658'
 
     def check_legal_move(self, position):
         pass
@@ -316,7 +315,7 @@ class Knight(Piece):
             Returns:
             str: The Unicode symbol representing the chess piece.
             """
-            if self.colour == 'White':
+            if self.color == 'White':
                 return '\u265D'
             else:
                 return '\u2657'
@@ -339,7 +338,7 @@ class Knight(Piece):
             Returns:
             str: The Unicode symbol representing the chess piece.
             """
-            if self.colour == 'White':
+            if self.color == 'White':
                 return '\u265B'
             else:
                 return '\u2655'
@@ -362,7 +361,7 @@ class Knight(Piece):
             Returns:
             str: The Unicode symbol representing the chess piece.
             """
-            if self.colour == 'White':
+            if self.color == 'White':
                 return '\u265A'
             else:
                 return '\u2654'
