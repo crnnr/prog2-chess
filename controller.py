@@ -1,4 +1,5 @@
 import sys
+import os
 
 class Controller:
     """Class that handles everything for the module"""
@@ -73,3 +74,14 @@ class Controller:
                 return False
             else:
                 print('Invalid input! Please answer the question with "yes" or "no"')
+
+    def list_saved_games(self):
+        """List all saved games in the saved_games directory."""
+        saved_games_dir = 'saved_games'
+        saved_games = os.listdir(saved_games_dir)
+        if len(saved_games == 0):
+            self.view.display_message('No saved games found!')
+        else:
+            for game in saved_games:
+                print(game)
+            return saved_games

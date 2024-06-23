@@ -251,8 +251,30 @@ class Pawn(Piece):
         else:
             return '\u2659'
 
-    def check_legal_move(self, position):
-        pass
+    def check_legal_move(self, position, state):
+        
+        if self.color == 'White':
+            if self.position - 8 == position:
+                return True
+            elif self.position - 16 == position and self.position in range(48, 56):
+                return True
+            elif self.position - 7 == position and self.check_occupied_hostile(position, state):
+                return True
+            elif self.position - 9 == position and self.check_occupied_hostile(position, state):
+                return True
+            else:
+                return False
+        else:
+            if self.position + 8 == position:
+                return True
+            elif self.position + 16 == position and self.position in range(8, 16):
+                return True
+            elif self.position + 7 == position and self.check_occupied_hostile(position, state):
+                return True
+            elif self.position + 9 == position and self.check_occupied_hostile(position, state):
+                return True
+            else:
+                return False
 
 class Rook(Piece):
 
