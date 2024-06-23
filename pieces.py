@@ -232,72 +232,88 @@ class Piece(metaclass=ABCMeta):
         return allowed
 
 class Pawn(Piece):
-
-    def __init__(self, color, position):
-        super().__init__()
+    
+    def __init__(self, colour, position, model):
+        Piece.__init__(self)
+        self.model = model
+        self.colour = colour
         self.symbol = self.set_symbol()
-        self.color = color
         self.position = position
+        self.moved = False
+        Pawn.table = [
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [5, 10, 10, -20, -20, 10, 10, 5],
+            [5, -5, -10, 0, 0, -10, -5, 5],
+            [0, 0, 0, 20, 20, 0, 0, 0],
+            [5, 5, 10, 25, 25, 10, 5, 5],
+            [10, 10, 20, 30, 30, 20, 10, 10],
+            [50, 50, 50, 50, 50, 50, 50, 50],
+            [0, 0, 0, 0, 0, 0, 0, 0]
+        ]
 
     def set_symbol(self):
-        """
-        Sets the symbol for the chess piece based on its color.
-
-        Returns:
-            str: The Unicode symbol representing the chess piece.
-        """
-        if self.color == 'White':
-            return '\u265F'
+        if self.model.show_symbols:
+            if self.colour == 'White':
+                return '\u2659'
+            else:
+                return '\u265F'
         else:
-            return '\u2659'
+            if self.colour == 'White':
+                return 'P'
+            else:
+                return 'p'
 
-    def check_legal_move(self, position, state):
-        
-        if self.color == 'White':
-            if self.position - 8 == position:
-                return True
-            elif self.position - 16 == position and self.position in range(48, 56):
-                return True
-            elif self.position - 7 == position and self.check_occupied_hostile(position, state):
-                return True
-            elif self.position - 9 == position and self.check_occupied_hostile(position, state):
+    def check_legal_move(self, position, state="", return_all=False):
+        allowed = []
+        if state == "":
+            state = self.model.board_state
+
+        row = math.floor(self.position / 8)
+        column = self.position - (row * 7) - row
+
+        if self.colour == 'White':
+            if not self.check_occupied(self.position - 8, state):
+                allowed.append(self.position - 8)
+            if self.check_occupied_hostile(self.position - 9, state) and column != 0:
+                allowed.append(self.position - 9)
+            if self.check_occupied_hostile(self.position - 7, state) and column != 7:
+                allowed.append(self.position - 7)
+            if not self.moved:
+                if not self.check_occupied(self.position - 16, state) and\
+                        not self.check_occupied(self.position - 8, state):
+                    allowed.append(self.position - 16)
+        else:
+            if not self.check_occupied(self.position + 8, state):
+                allowed.append(self.position + 8)
+            if self.check_occupied_hostile(self.position + 9, state) and column != 7:
+                allowed.append(self.position + 9)
+            if self.check_occupied_hostile(self.position + 7, state) and column != 0:
+                allowed.append(self.position + 7)
+            if not self.moved:
+                if not self.check_occupied(self.position + 16, state) and\
+                        not self.check_occupied(self.position + 8, state):
+                    allowed.append(self.position + 16)
+
+        if return_all:
+            return allowed
+
+        if position in allowed:
+            return True
+        else:
+            return False
+
+    def upgrade(self):
+        if self.colour == 'Black':
+            if self.position in range(56, 63):
                 return True
             else:
                 return False
         else:
-            if self.position + 8 == position:
-                return True
-            elif self.position + 16 == position and self.position in range(8, 16):
-                return True
-            elif self.position + 7 == position and self.check_occupied_hostile(position, state):
-                return True
-            elif self.position + 9 == position and self.check_occupied_hostile(position, state):
+            if self.position in range(0, 7):
                 return True
             else:
                 return False
 
-class Rook(Piece):
-
-    def __init__(self, color, position):
-        super().__init__()
-        self.symbol = self.set_symbol()
-        self.color = color
-        self.position = position
-
-    def set_symbol(self):
-        """
-        Sets the symbol for the chess piece based on its color.
-
-        Returns:
-            str: The Unicode symbol representing the chess piece.
-        """
-        if self.color == 'White':
-                return '\u265E'
-        else:
-                return '\u2658'
-
-    def check_legal_move(self, position):
-        pass
 
 class Knight(Piece):
 
@@ -322,7 +338,7 @@ class Knight(Piece):
     def check_legal_move(self, position):
         pass
 
-    class Bishop(Piece):
+class Bishop(Piece):
 
         def __init__(self, color, position):
             super().__init__()
@@ -345,48 +361,44 @@ class Knight(Piece):
         def check_legal_move(self, position):
             pass
 
-    class Queen(Piece):
+class Queen(Piece):
+     
+    def __init__(self, colour, position, model):
+        Piece.__init__(self)
+        self.model = model
+        self.colour = colour
+        self.symbol = self.set_symbol()
+        self.position = position
 
-        def __init__(self, color, position):
-            super().__init__()
-            self.symbol = self.set_symbol()
-            self.color = color
-            self.position = position
+    def set_symbol(self):
+        """
+        Sets the symbol for the chess piece based on its color.
+        Returns:
+        str: The Unicode symbol representing the chess piece.
+        """
+        if self.color == 'White':
+            return '\u265B'
+        else:
+            return '\u2655'
 
-        def set_symbol(self):
-            """
-            Sets the symbol for the chess piece based on its color.
+    def check_legal_move(self, position):
+        pass
 
-            Returns:
-            str: The Unicode symbol representing the chess piece.
-            """
-            if self.color == 'White':
-                return '\u265B'
-            else:
-                return '\u2655'
-
-        def check_legal_move(self, position):
-            pass
-
-    class King(Piece):
-
-        def __init__(self, color, position):
-            super().__init__()
-            self.symbol = self.set_symbol()
-            self.color = color
-            self.position = position
-
-        def set_symbol(self):
-            """
-            Sets the symbol for the chess piece based on its color.
-
-            Returns:
-            str: The Unicode symbol representing the chess piece.
-            """
-            if self.color == 'White':
-                return '\u265A'
-            else:
-                return '\u2654'
-
-        def check_legal_move(self, position):
-            pass
+class King(Piece):
+    def __init__(self, color, position):
+        super().__init__()
+        self.symbol = self.set_symbol()
+        self.color = color
+        self.position = position
+    def set_symbol(self):
+        """
+        Sets the symbol for the chess piece based on its color.
+        Returns:
+        str: The Unicode symbol representing the chess piece.
+        """
+        if self.color == 'White':
+            return '\u265A'
+        else:
+            return '\u2654'
+    def check_legal_move(self, position):
+        pass

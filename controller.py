@@ -1,7 +1,7 @@
 import sys
 import os
 
-class Controller:
+class GameManager:
     """Class that handles everything for the module"""
 
     def __init__(self, view):
