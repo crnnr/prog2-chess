@@ -1,5 +1,6 @@
 import sys
 import os
+import datetime
 
 class GameManager:
     """Class that handles everything for the module"""
@@ -85,3 +86,31 @@ class GameManager:
             for game in saved_games:
                 print(game)
             return saved_games
+        
+    def save_gamestate(self):
+        """Save the current game state to a file."""
+        save_name = input("Please enter a name for the save file: "
+                          "(leave blank for a timestamped filename): ")
+        
+        if not save_name:
+            save_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".json"
+        else:
+            if not save_name.endswith(".json"):
+                save_name += ".json"
+        #OS independent path
+        filename = Path("saved_games", save_name)
+        self.create_directory_if_not_exists()
+        
+        gamestate = {
+            'currently_playing': self.model.currently_playing,
+            'show_symbols': self.model.show_symbols,
+            'board_state': {str(i): self.piece_to_dict(self.model.board_state[i]) for i in range(64)},
+            'ai': self.model.ai
+        }
+
+        try:
+            with open(filename, 'w', encoding='utf-8') as file:
+                json.dump(gamestate, file, indent=4)
+                print(f"Game saved as {filename}")
+        except IOError as e:
+            print(f"Failed to save game: {e}")
