@@ -1,6 +1,10 @@
 import sys
 import os
 import datetime
+import json
+from pathlib import Path
+from algorithm import GameAI
+from pieces import Rook, Knight, Bishop, Queen, King, Pawn
 
 class GameManager:
     """Class that handles everything for the module"""
@@ -114,3 +118,63 @@ class GameManager:
                 print(f"Game saved as {filename}")
         except IOError as e:
             print(f"Failed to save game: {e}")
+
+    def load_gamestate(self):
+        """Load a game state from a file."""
+        saved_games = self.list_saved_games()
+        if saved_games is None:
+            return  # Return to the main menu or handle appropriately
+        try:
+            selection = int(input('Please enter the number of the game to load: '))
+            game_save_path = saved_games[selection - 1] 
+        except (IndexError, ValueError):
+            print("Invalid selection. Please try again.")
+            self.load_gamestate()
+
+        
+        if game_save_path.exists() and game_save_path.is_file():
+            print(f"Loading game from {game_save_path}")
+            with game_save_path.open("r") as file:
+                GameSave = json.load(file)
+                # Set the current player and symbol preference
+                self.model.currently_playing = GameSave['currently_playing']
+                self.model.show_symbols = GameSave['show_symbols']
+                self.load_game = True
+                self.user_ai = GameAI(self.model, self.view, "Black", "White")
+
+                if 'Ai' in GameSave:
+                    self.ai = True
+                    self.model.ai = True
+
+                for i in range(64):
+                    # If the piece is None, the position is empty
+                    if GameSave['board_state'][str(i)]['piece'] == 'None':  # Moved wird nicht übernommen
+                        self.model.board_state[i] = None
+                    else:
+                        # If the piece is not None, create a new piece object
+                        if GameSave['board_state'][str(i)]['piece'] == 'Rooks':
+                            self.model.board_state[i] = Rook(GameSave['board_state'][str(i)]['colour'],
+                                                             i, self.model)
+                        if GameSave['board_state'][str(i)]['piece'] == 'Knights':
+                            self.model.board_state[i] = Knight(GameSave['board_state'][str(i)]['colour'],
+                                                              i, self.model)
+                        if GameSave['board_state'][str(i)]['piece'] == 'Bishops':
+                            self.model.board_state[i] = Bishop(GameSave['board_state'][str(i)]['colour'],
+                                                               i, self.model)
+                        if GameSave['board_state'][str(i)]['piece'] == 'Queens':
+                            self.model.board_state[i] = Queen(GameSave['board_state'][str(i)]['colour'],
+                                                              i, self.model)
+                        if GameSave['board_state'][str(i)]['piece'] == 'Kings':
+                            self.model.board_state[i] = King(GameSave['board_state'][str(i)]['colour'],
+                                                             i, self.model)
+                        if GameSave['board_state'][str(i)]['piece'] == 'Pawns':
+                            self.model.board_state[i] = Pawn(GameSave['board_state'][str(i)]['colour'],
+                                                             i, self.model)
+                
+        else:
+            print("There's no Save File for your Game!")
+            return False
+
+        self.view.last_board = self.model.get_copy_board_state()
+        return True
+
