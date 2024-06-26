@@ -264,6 +264,7 @@ class Pawn(Piece):
                 return 'p'
 
     def check_legal_move(self, position, state="", return_all=False):
+        """Checks if the move is legal for the pawn piece."""
         allowed = []
         if state == "":
             state = self.model.board_state
@@ -314,6 +315,40 @@ class Pawn(Piece):
             else:
                 return False
 
+class Rook(Piece):
+    def __init__(self, color, position):
+        super().__init__()
+        self.symbol = self.set_symbol()
+        self.color = color
+        self.position = position
+
+    def set_symbol(self):
+        """
+        Sets the symbol for the chess piece based on its color.
+        Returns:
+        str: The Unicode symbol representing the chess piece.
+        """
+        if self.color == 'White':
+            return '\u265C'
+        else:
+            return '\u2656'
+    
+    def check_legal_move(self, position, state="", return_all=False):
+        """Checks if the move is legal for the rook piece."""
+        allowed = []
+
+        if state == "":
+            state = self.model.board_state
+
+        allowed += self.check_linear(state)
+
+        if return_all:
+            return allowed
+
+        if position in allowed:
+            return True
+        else:
+            return False
 
 class Knight(Piece):
 
@@ -335,8 +370,39 @@ class Knight(Piece):
         else:
             return '\u2658'
 
-    def check_legal_move(self, position):
-        pass
+    def check_legal_move(self, position, state="", return_all=False):
+        allowed = []
+
+        if state == "":
+            state = self.model.board_state
+
+        row = math.floor(self.position / 8)
+        column = self.position - (row * 7) - row
+
+        if not self.check_occupied_friendly(self.position - 17, state) and row >= 2 and column >= 1:
+            allowed.append(self.position - 17)
+        if not self.check_occupied_friendly(self.position - 15, state) and row >= 2 and column <= 6:
+            allowed.append(self.position - 15)
+        if not self.check_occupied_friendly(self.position - 10, state) and row >= 1 and column >= 2:
+            allowed.append(self.position - 10)
+        if not self.check_occupied_friendly(self.position - 6, state) and row >= 1 and column <= 5:
+            allowed.append(self.position - 6)
+        if not self.check_occupied_friendly(self.position + 17, state) and row <= 5 and column <= 6:
+            allowed.append(self.position + 17)
+        if not self.check_occupied_friendly(self.position + 15, state) and row <= 5 and column >= 1:
+            allowed.append(self.position + 15)
+        if not self.check_occupied_friendly(self.position + 10, state) and row <= 6 and column <= 5:
+            allowed.append(self.position + 10)
+        if not self.check_occupied_friendly(self.position + 6, state) and row <= 6 and column >= 2:
+            allowed.append(self.position + 6)
+        if return_all:
+            return allowed
+
+        if position in allowed:
+            return True
+        else:
+            return False
+
 
 class Bishop(Piece):
 
@@ -358,8 +424,19 @@ class Bishop(Piece):
             else:
                 return '\u2657'
 
-        def check_legal_move(self, position):
-            pass
+        def check_legal_move(self, position, state="", return_all=False):
+            """Checks if the move is legal for the bishop piece."""
+            if state == "":
+                state = self.model.board_state
+
+            allowed = self.check_diagonal(state)
+
+            if return_all:
+                return allowed
+            if position in allowed:
+                return True
+            else:
+                return False
 
 class Queen(Piece):
      
@@ -381,8 +458,18 @@ class Queen(Piece):
         else:
             return '\u2655'
 
-    def check_legal_move(self, position):
-        pass
+    def check_legal_move(self, position, state="", return_all=False):
+        """Checks if the move is legal for the queen piece."""
+        if state == "":
+            state = self.model.board_state
+
+        allowed = self.check_linear(state) + self.check_diagonal(state)
+        if return_all:
+            return allowed
+        if position in allowed:
+            return True
+        else:
+            return False
 
 class King(Piece):
     def __init__(self, color, position):
@@ -400,5 +487,32 @@ class King(Piece):
             return '\u265A'
         else:
             return '\u2654'
-    def check_legal_move(self, position):
-        pass
+    def check_legal_move(self, position, state="", return_all=False):
+        """Checks if the move is legal for the king piece."""
+        allowed = []
+
+        if state == "":
+            state = self.model.board_state
+
+        if not self.check_occupied_friendly(self.position - 9, state):
+            allowed.append(self.position - 9)
+        if not self.check_occupied_friendly(self.position - 8, state):
+            allowed.append(self.position - 8)
+        if not self.check_occupied_friendly(self.position - 7, state):
+            allowed.append(self.position - 7)
+        if not self.check_occupied_friendly(self.position - 1, state):
+            allowed.append(self.position - 1)
+        if not self.check_occupied_friendly(self.position + 1, state):
+            allowed.append(self.position + 1)
+        if not self.check_occupied_friendly(self.position + 7, state):
+            allowed.append(self.position + 7)
+        if not self.check_occupied_friendly(self.position + 8, state):
+            allowed.append(self.position + 8)
+        if not self.check_occupied_friendly(self.position + 9, state):
+            allowed.append(self.position + 9)
+        if return_all:
+            return allowed
+        if position in allowed:
+            return True
+        else:
+            return False
