@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from algorithm import GameAI
 from pieces import Rook, Knight, Bishop, Queen, King, Pawn
+from view import GameView
 
 class GameManager:
     """Class that handles everything for the module"""
@@ -72,13 +73,13 @@ class GameManager:
     def get_symbol_preference():
         
         while True:
-            choice = input('Do you want to use symbols? If not, letters will be used instead. (Y/N): ')
+            choice = GameView.get_user_input('Do you want to use symbols? If not, letters will be used instead. (Y/N): ')
             if choice.lower() == 'y' or choice.lower() == 'yes':
                 return True
             elif choice.lower() == 'n' or choice.lower() == 'no':
                 return False
             else:
-                print('Invalid input! Please answer the question with "yes" or "no"')
+                GameView.display('Invalid input! Please answer the question with "yes" or "no"')
 
     def list_saved_games(self):
         """List all saved games in the saved_games directory."""
@@ -88,12 +89,12 @@ class GameManager:
             self.view.display_message('No saved games found!')
         else:
             for game in saved_games:
-                print(game)
+                GameView.display_message(game)
             return saved_games
         
     def save_gamestate(self):
         """Save the current game state to a file."""
-        save_name = input("Please enter a name for the save file: "
+        save_name = self.view.get_user_input("Please enter a name for the save file: "
                           "(leave blank for a timestamped filename): ")
         
         if not save_name:
@@ -115,9 +116,9 @@ class GameManager:
         try:
             with open(filename, 'w', encoding='utf-8') as file:
                 json.dump(gamestate, file, indent=4)
-                print(f"Game saved as {filename}")
+                self.view.display_message(f"Game saved as {filename}")
         except IOError as e:
-            print(f"Failed to save game: {e}")
+            self.view.display_message(f"Failed to save game: {e}")
 
     def load_gamestate(self):
         """Load a game state from a file."""
@@ -125,15 +126,15 @@ class GameManager:
         if saved_games is None:
             return  # Return to the main menu or handle appropriately
         try:
-            selection = int(input('Please enter the number of the game to load: '))
+            selection = int(self.view.get_user_input('Please enter the number of the game to load: '))
             game_save_path = saved_games[selection - 1] 
         except (IndexError, ValueError):
-            print("Invalid selection. Please try again.")
+            self.view.display_message("Invalid selection. Please try again.")
             self.load_gamestate()
 
         
         if game_save_path.exists() and game_save_path.is_file():
-            print(f"Loading game from {game_save_path}")
+            self.view.display_message(f"Loading game from {game_save_path}")
             with game_save_path.open("r") as file:
                 GameSave = json.load(file)
                 # Set the current player and symbol preference
@@ -172,7 +173,7 @@ class GameManager:
                                                              i, self.model)
                 
         else:
-            print("There's no Save File for your Game!")
+            self.view.display_message("There's no Save File for your Game!")
             return False
 
         self.view.last_board = self.model.get_copy_board_state()
