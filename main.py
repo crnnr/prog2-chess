@@ -1,9 +1,8 @@
-from controller import GameManager
-from view import GameView
+
+from model import Model
 
 if __name__ == "__main__":
-    game_view = GameView()
-    controller = GameManager(game_view)
-    game_view.controller = controller  # Set the controller after initialization
-    game_view.clear_console()
-    game_view.print_menu()
+    model = Model()
+    model.game_manager.model = model
+    model.view.model = model
+    model.view.print_menu()

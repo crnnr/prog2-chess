@@ -1,12 +1,13 @@
 from abc import ABCMeta, abstractmethod
 import math
 
+
 class Piece(metaclass=ABCMeta):
 
     def __init__(self):
-        self.player = None
+        self.model = None
         self.symbol = None
-        self.color = None
+        self.colour = None
         self.moved = False
         self.position = None
 
@@ -15,10 +16,9 @@ class Piece(metaclass=ABCMeta):
         pass
 
     def check_occupied_friendly(self, position, state):
-        """Checks if the given position on the chessboard is occupied by a friendly piece."""
         if position in range(64):
             if state[position] is not None:
-                if state[position].color == self.player.currently_playing:
+                if state[position].colour == self.model.currently_playing:
                     return True
                 else:
                     return False
@@ -28,10 +28,9 @@ class Piece(metaclass=ABCMeta):
             return False
 
     def check_occupied_hostile(self, position, state):
-        """Checks if the given position on the chessboard is occupied by an enemy piece. """
         if position in range(64):
             if state[position] is not None:
-                if state[position].color != self.player.currently_playing:
+                if state[position].colour != self.model.currently_playing:
                     return True
                 else:
                     return False
@@ -41,7 +40,6 @@ class Piece(metaclass=ABCMeta):
             return False
 
     def check_occupied(self, position, state):
-        """Checks if a given position on the chessboard is occupied by a piece."""
         if position in range(64):
             if self.check_occupied_hostile(position, state) or self.check_occupied_friendly(position, state):
                 return True
@@ -51,7 +49,6 @@ class Piece(metaclass=ABCMeta):
             return False
 
     def check_linear(self, state):
-        """Checks for allowed moves in a linear direction (up, down, left, right) for the current piece."""
         allowed = []
 
         main_row = math.floor(self.position / 8)
@@ -128,7 +125,6 @@ class Piece(metaclass=ABCMeta):
         return allowed
 
     def check_diagonal(self, state):
-        """Checks for allowed moves in a diagonal direction for the current piece."""
         allowed = []
 
         main_row = math.floor(self.position / 8)
@@ -231,6 +227,164 @@ class Piece(metaclass=ABCMeta):
                 break
         return allowed
 
+
+class Rook(Piece):
+
+    def __init__(self, colour, position, model):
+        Piece.__init__(self)
+        self.model = model
+        self.colour = colour
+        self.symbol = self.set_symbol()
+        self.position = position
+        Rook.table = [
+            [0, 0, 0, 5, 5, 0, 0, 0],
+            [-5, 0, 0, 0, 0, 0, 0, -5],
+            [-5, 0, 0, 0, 0, 0, 0, -5],
+            [-5, 0, 0, 0, 0, 0, 0, -5],
+            [-5, 0, 0, 0, 0, 0, 0, -5],
+            [-5, 0, 0, 0, 0, 0, 0, -5],
+            [5, 10, 10, 10, 10, 10, 10, 5],
+            [0, 0, 0, 0, 0, 0, 0, 0]
+        ]
+
+    def set_symbol(self):
+        if self.model.show_symbols:
+            if self.colour == 'White':
+                return '\u2656'
+            else:
+                return '\u265C'
+        else:
+            if self.colour == 'White':
+                return 'R'
+            else:
+                return 'r'
+
+    def check_legal_move(self, position, state="", return_all=False):
+        if state == "":
+            state = self.model.board_state
+
+        allowed = self.check_linear(state)
+
+        if return_all:
+            return allowed
+        if position in allowed:
+            return True
+        else:
+            return False
+
+
+class Knight(Piece):
+
+    def __init__(self, colour, position, model):
+        Piece.__init__(self)
+        self.model = model
+        self.colour = colour
+        self.symbol = self.set_symbol()
+        self.position = position
+        self.moved = False
+        Knight.table = [
+            [-50, -40, -30, -30, -30, -30, -40, -50],
+            [-40, -20, 0, 5, 5, 0, -20, -40],
+            [-30, 5, 10, 15, 15, 10, 5, -30],
+            [-30, 0, 15, 20, 20, 15, 0, -30],
+            [-30, 5, 15, 20, 20, 15, 0, -30],
+            [-30, 0, 10, 15, 15, 10, 0, -30],
+            [-40, -20, 0, 0, 0, 0, -20, -40],
+            [-50, -40, -30, -30, -30, -30, -40, -50]
+        ]
+
+    def set_symbol(self):
+        if self.model.show_symbols:
+            if self.colour == 'White':
+                return '\u2658'
+            else:
+                return '\u265E'
+        else:
+            if self.colour == 'White':
+                return 'H'
+            else:
+                return 'h'
+
+    def check_legal_move(self, position, state="", return_all=False):
+        allowed = []
+
+        if state == "":
+            state = self.model.board_state
+
+        row = math.floor(self.position / 8)
+        column = self.position - (row * 7) - row
+
+        if not self.check_occupied_friendly(self.position - 17, state) and row >= 2 and column >= 1:
+            allowed.append(self.position - 17)
+        if not self.check_occupied_friendly(self.position - 15, state) and row >= 2 and column <= 6:
+            allowed.append(self.position - 15)
+        if not self.check_occupied_friendly(self.position - 10, state) and row >= 1 and column >= 2:
+            allowed.append(self.position - 10)
+        if not self.check_occupied_friendly(self.position - 6, state) and row >= 1 and column <= 5:
+            allowed.append(self.position - 6)
+        if not self.check_occupied_friendly(self.position + 17, state) and row <= 5 and column <= 6:
+            allowed.append(self.position + 17)
+        if not self.check_occupied_friendly(self.position + 15, state) and row <= 5 and column >= 1:
+            allowed.append(self.position + 15)
+        if not self.check_occupied_friendly(self.position + 10, state) and row <= 6 and column <= 5:
+            allowed.append(self.position + 10)
+        if not self.check_occupied_friendly(self.position + 6, state) and row <= 6 and column >= 2:
+            allowed.append(self.position + 6)
+        if return_all:
+            return allowed
+
+        if position in allowed:
+            return True
+        else:
+            return False
+
+
+class Bishop(Piece):
+
+    def __init__(self, colour, position, model):
+        Piece.__init__(self)
+        self.model = model
+        self.colour = colour
+        self.symbol = self.set_symbol()
+        self.position = position
+        self.moved = False
+        Bishop.table = [
+            [-20, -10, -10, -10, -10, -10, -10, -20],
+            [-10, 5, 0, 0, 0, 0, 5, -10],
+            [-10, 10, 10, 10, 10, 10, 10, -10],
+            [-10, 0, 10, 10, 10, 10, 0, -10],
+            [-10, 5, 5, 10, 10, 5, 5, -10],
+            [-10, 0, 5, 10, 10, 5, 0, -10],
+            [-10, 0, 0, 0, 0, 0, 0, -10],
+            [-20, -10, -10, -10, -10, -10, -10, -20]
+        ]
+
+    def set_symbol(self):
+        if self.model.show_symbols:
+            if self.colour == 'White':
+                return '\u2657'
+            else:
+                return '\u265D'
+        else:
+            if self.colour == 'White':
+                return 'B'
+            else:
+                return 'b'
+
+    def check_legal_move(self, position, state="", return_all=False):
+        if state == "":
+            state = self.model.board_state
+
+        allowed = self.check_diagonal(state)
+
+        if return_all:
+            return allowed
+        if position in allowed:
+            return True
+        else:
+            return False
+
+
 class Pawn(Piece):
     
     def __init__(self, colour, position, model):
@@ -264,7 +418,6 @@ class Pawn(Piece):
                 return 'p'
 
     def check_legal_move(self, position, state="", return_all=False):
-        """Checks if the move is legal for the pawn piece."""
         allowed = []
         if state == "":
             state = self.model.board_state
@@ -315,151 +468,39 @@ class Pawn(Piece):
             else:
                 return False
 
-class Rook(Piece):
-    def __init__(self, color, position):
-        super().__init__()
-        self.symbol = self.set_symbol()
-        self.color = color
-        self.position = position
-
-    def set_symbol(self):
-        """
-        Sets the symbol for the chess piece based on its color.
-        Returns:
-        str: The Unicode symbol representing the chess piece.
-        """
-        if self.color == 'White':
-            return '\u265C'
-        else:
-            return '\u2656'
-    
-    def check_legal_move(self, position, state="", return_all=False):
-        """Checks if the move is legal for the rook piece."""
-        allowed = []
-
-        if state == "":
-            state = self.model.board_state
-
-        allowed += self.check_linear(state)
-
-        if return_all:
-            return allowed
-
-        if position in allowed:
-            return True
-        else:
-            return False
-
-class Knight(Piece):
-
-    def __init__(self, color, position):
-        super().__init__()
-        self.symbol = self.set_symbol()
-        self.color = color
-        self.position = position
-
-    def set_symbol(self):
-        """
-        Sets the symbol for the chess piece based on its color.
-
-        Returns:
-            str: The Unicode symbol representing the chess piece.
-        """
-        if self.color == 'White':
-            return '\u265E'
-        else:
-            return '\u2658'
-
-    def check_legal_move(self, position, state="", return_all=False):
-        allowed = []
-
-        if state == "":
-            state = self.model.board_state
-
-        row = math.floor(self.position / 8)
-        column = self.position - (row * 7) - row
-
-        if not self.check_occupied_friendly(self.position - 17, state) and row >= 2 and column >= 1:
-            allowed.append(self.position - 17)
-        if not self.check_occupied_friendly(self.position - 15, state) and row >= 2 and column <= 6:
-            allowed.append(self.position - 15)
-        if not self.check_occupied_friendly(self.position - 10, state) and row >= 1 and column >= 2:
-            allowed.append(self.position - 10)
-        if not self.check_occupied_friendly(self.position - 6, state) and row >= 1 and column <= 5:
-            allowed.append(self.position - 6)
-        if not self.check_occupied_friendly(self.position + 17, state) and row <= 5 and column <= 6:
-            allowed.append(self.position + 17)
-        if not self.check_occupied_friendly(self.position + 15, state) and row <= 5 and column >= 1:
-            allowed.append(self.position + 15)
-        if not self.check_occupied_friendly(self.position + 10, state) and row <= 6 and column <= 5:
-            allowed.append(self.position + 10)
-        if not self.check_occupied_friendly(self.position + 6, state) and row <= 6 and column >= 2:
-            allowed.append(self.position + 6)
-        if return_all:
-            return allowed
-
-        if position in allowed:
-            return True
-        else:
-            return False
-
-
-class Bishop(Piece):
-
-        def __init__(self, color, position):
-            super().__init__()
-            self.symbol = self.set_symbol()
-            self.color = color
-            self.position = position
-
-        def set_symbol(self):
-            """
-            Sets the symbol for the chess piece based on its color.
-
-            Returns:
-            str: The Unicode symbol representing the chess piece.
-            """
-            if self.color == 'White':
-                return '\u265D'
-            else:
-                return '\u2657'
-
-        def check_legal_move(self, position, state="", return_all=False):
-            """Checks if the move is legal for the bishop piece."""
-            if state == "":
-                state = self.model.board_state
-
-            allowed = self.check_diagonal(state)
-
-            if return_all:
-                return allowed
-            if position in allowed:
-                return True
-            else:
-                return False
 
 class Queen(Piece):
-     
+    
     def __init__(self, colour, position, model):
         Piece.__init__(self)
         self.model = model
         self.colour = colour
         self.symbol = self.set_symbol()
         self.position = position
+        Queen.table = [
+            [-20, -10, -10, -5, -5, -10, -10, -20],
+            [-10, 0, 5, 0, 0, 0, 0, -10],
+            [-10, 5, 5, 5, 5, 5, 0, -10],
+            [0, 0, 5, 5, 5, 5, 0, -5],
+            [-5, 0, 5, 5, 5, 5, 0, -5],
+            [-10, 0, 5, 5, 5, 5, 0, -10],
+            [-10, 0, 0, 0, 0, 0, 0, -10],
+            [-20, -10, -10, -5, -5, -10, -10, -20]
+        ]
 
     def set_symbol(self):
-        """
-        Sets the symbol for the chess piece based on its color.
-        Returns:
-        str: The Unicode symbol representing the chess piece.
-        """
-        if self.color == 'White':
-            return '\u265B'
+        if self.model.show_symbols:
+            if self.colour == 'White':
+                return '\u2655'
+            else:
+                return '\u265B'
         else:
-            return '\u2655'
+            if self.colour == 'White':
+                return 'Q'
+            else:
+                return 'q'
 
     def check_legal_move(self, position, state="", return_all=False):
-        """Checks if the move is legal for the queen piece."""
         if state == "":
             state = self.model.board_state
 
@@ -471,24 +512,30 @@ class Queen(Piece):
         else:
             return False
 
+
 class King(Piece):
-    def __init__(self, color, position):
-        super().__init__()
+    
+    def __init__(self, colour, position, model):
+        Piece.__init__(self)
+        self.model = model
+        self.colour = colour
         self.symbol = self.set_symbol()
-        self.color = color
         self.position = position
+        self.moved = False
+
     def set_symbol(self):
-        """
-        Sets the symbol for the chess piece based on its color.
-        Returns:
-        str: The Unicode symbol representing the chess piece.
-        """
-        if self.color == 'White':
-            return '\u265A'
+        if self.model.show_symbols:
+            if self.colour == 'White':
+                return '\u2654'
+            else:
+                return '\u265A'
         else:
-            return '\u2654'
+            if self.colour == 'White':
+                return 'K'
+            else:
+                return 'k'
+
     def check_legal_move(self, position, state="", return_all=False):
-        """Checks if the move is legal for the king piece."""
         allowed = []
 
         if state == "":

@@ -1,6 +1,6 @@
 from view import GameView
 from controller import GameManager
-from pieces import Pawn, King, Queen
+from pieces import Rook, Knight, Bishop, Pawn, King, Queen
 
 class Model:
 
@@ -16,7 +16,6 @@ class Model:
         self.set_initial_pieces()
 
     def set_initial_pieces(self):
-        # Set the initial pieces on the board
         positions = {'Rook': [0, 7, 56, 63], 'Knight': [1, 6, 57, 62], 'Bishop': [2, 5, 58, 61],
                      'Queen': [3, 59], 'King': [4, 60]}
         for piece, places in positions.items():
