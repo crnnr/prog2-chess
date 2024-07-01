@@ -151,7 +151,7 @@ class GameManager:
         saved_games_dir = 'saved_games'
         saved_games = os.listdir(saved_games_dir)
         if len(saved_games == 0):
-            self.view.display_message('No saved games found!')
+            GameView.display_message('No saved games found!')
         else:
             for game in saved_games:
                 GameView.display_message(game)
@@ -159,7 +159,7 @@ class GameManager:
         
     def save_gamestate(self):
         """Save the current game state to a file."""
-        save_name = self.view.get_user_input("Please enter a name for the save file: "
+        save_name = GameView.input_prompt("Please enter a name for the save file: "
                           "(leave blank for a timestamped filename): ")
         
         if not save_name:
@@ -191,15 +191,15 @@ class GameManager:
         if saved_games is None:
             return  # Return to the main menu or handle appropriately
         try:
-            selection = int(self.view.get_user_input('Please enter the number of the game to load: '))
+            selection = int(GameView.input_prompt('Please enter the number of the game to load: '))
             game_save_path = saved_games[selection - 1] 
         except (IndexError, ValueError):
-            self.view.display_message("Invalid selection. Please try again.")
+            GameView.display_message("Invalid selection. Please try again.")
             self.load_gamestate()
 
         
         if game_save_path.exists() and game_save_path.is_file():
-            self.view.display_message(f"Loading game from {game_save_path}")
+            GameView.display_message(f"Loading game from {game_save_path}")
             with game_save_path.open("r") as file:
                 GameSave = json.load(file)
                 # Set the current player and symbol preference
