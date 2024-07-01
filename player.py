@@ -14,10 +14,10 @@ class Player():
 
 class HumanPlayer(Player):
     
-    def __init__(self, color, view, game_manager):
+    def __init__(self, color, view):
         super().__init__(color)
         self.view = view
-        self.game_manager = game_manager
+        self.game_manager = view.game_manager
 
     def make_move(self, start_pos, goal_pos, board, update=True):
         """Method to make a move."""
@@ -38,12 +38,12 @@ class HumanPlayer(Player):
 
 class ComputerPlayer(Player):
 
-    def __init__(self, color, board, view, enemy, game_manager):
+    def __init__(self, color, board, view, enemy):
         super().__init__(color)
         self.is_currently_playing = False
         self.game_ai = GameAI(board, view, color, enemy)
         self.view = view
-        self.game_manager = game_manager
+        self.game_manager = view.game_manager
 
     def make_move(self, board, update=True):
         """Method to make a move."""
