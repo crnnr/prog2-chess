@@ -249,3 +249,10 @@ class GameManager:
 
         self.view.last_board = self.board.get_copy_board_state()
         return True
+
+    @staticmethod
+    def create_directory_if_not_exists():
+        """
+        Create the directory for saved games if it does not exist.
+        """
+        Path("savedGames").mkdir(parents=True, exist_ok=True)
