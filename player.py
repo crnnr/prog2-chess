@@ -25,7 +25,7 @@ class HumanPlayer(Player):
         piece = board.board_state[start_pos]
         if piece and piece.colour == self.currently_playing:
             if piece.check_legal_move(goal_pos):
-                board._update_positions(piece, start_pos, goal_pos, update)
+                board.update_positions(piece, start_pos, goal_pos, update)
                 board.toggle_player()
             else:
                 GameView.display_message('Illegal move! Please try again!')

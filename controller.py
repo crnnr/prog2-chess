@@ -132,7 +132,7 @@ class GameManager:
             start_pos = choice[:2]
             goal_pos = choice[-2:]
             if start_pos[0] in lines and goal_pos[0] in lines and start_pos[1] in columns and goal_pos[1] in columns:
-                self.player_white.make_move(self.board.correlation[start_pos], self.board.correlation[goal_pos])
+                self.player_white.make_move(self.board.correlation[start_pos], self.board.correlation[goal_pos], self.board)
             else:
                 GameView.display_message('Invalid Choice')
                 self.get_input()
@@ -141,7 +141,7 @@ class GameManager:
     def get_symbol_preference():
         
         while True:
-            choice = GameView.get_user_input('Do you want to use symbols? If not, letters will be used instead. (Y/N): ')
+            choice = GameView.input_prompt('Do you want to use symbols? If not, letters will be used instead. (Y/N): ')
             if choice.lower() == 'y' or choice.lower() == 'yes':
                 return True
             elif choice.lower() == 'n' or choice.lower() == 'no':

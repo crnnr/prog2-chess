@@ -32,7 +32,7 @@ class GameBoard:
            self.board_state[pos] = None
        self.pieces = [piece for piece in self.board_state if piece is not None]
 
-    def _update_positions(self, piece, start_pos, goal_pos, update):
+    def update_positions(self, piece, start_pos, goal_pos, update):
         """Update the positions of the pieces on the board"""
         killed_piece = self.board_state[goal_pos]
         self.board_state[goal_pos], self.board_state[start_pos] = piece, None
