@@ -1,7 +1,7 @@
 import sys
 import os
 from pathlib import Path
-import datetime
+from datetime import datetime
 import json
 from view import GameView
 from pieces import *
@@ -128,12 +128,19 @@ class GameManager:
             columns = ['1', '2', '3', '4', '5', '6', '7', '8']
             start_pos = choice[:2]
             goal_pos = choice[-2:]
-            if start_pos[0] in lines and goal_pos[0] in lines and start_pos[1] in columns and goal_pos[1] in columns:
-                self.player_white.make_move(self.board.correlation[start_pos], self.board.correlation[goal_pos], self.board)
-            else:
-                GameView.display_message('Invalid Choice')
-                self.get_input()
-
+            if self.ai == False:
+                if self.board.currently_playing == 'White':
+                    if start_pos[0] in lines and goal_pos[0] in lines and start_pos[1] in columns and goal_pos[1] in columns:
+                        self.player_white.make_move(self.board.correlation[start_pos], self.board.correlation[goal_pos], self.board)
+                    else:
+                        GameView.display_message('Invalid Choice')
+                        self.get_input()
+                else:
+                    if start_pos[0] in lines and goal_pos[0] in lines and start_pos[1] in columns and goal_pos[1] in columns:
+                        self.player_black.make_move(self.board.correlation[start_pos], self.board.correlation[goal_pos], self.board)
+                    else:
+                        GameView.display_message('Invalid Choice')
+                        self.get_input()
     @staticmethod
     def get_symbol_preference():
         
