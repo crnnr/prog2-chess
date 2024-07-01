@@ -192,6 +192,17 @@ class GameManager:
         except IOError as e:
             GameView.display_message(f"Failed to save game: {e}")
 
+    def piece_to_dict(self, piece):
+        
+        if piece is None:
+            return {'piece': None, 'symbol': None, 'colour': None, 'moved': None, 'position': None}
+        return {
+            'piece': type(piece).__name__,
+            'colour': piece.colour,
+            'moved': piece.moved,
+            'position': piece.position
+        }
+
     def load_gamestate(self):
         """Load a game state from a file."""
         saved_games = self.list_saved_games()
