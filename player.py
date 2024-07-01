@@ -1,5 +1,6 @@
 from view import GameView
 from algorithm import GameAI
+from controller import GameManager
 
 
 class Player():
@@ -17,7 +18,7 @@ class HumanPlayer(Player):
     def __init__(self, color, view):
         super().__init__(color)
         self.view = view
-        self.game_manager = view.game_manager
+        self.game_manager = GameManager(view)
 
     def make_move(self, start_pos, goal_pos, board, update=True):
         """Method to make a move."""
@@ -43,7 +44,7 @@ class ComputerPlayer(Player):
         self.is_currently_playing = False
         self.game_ai = GameAI(board, view, color, enemy)
         self.view = view
-        self.game_manager = view.game_manager
+        self.game_manager = GameManager(view)
 
     def make_move(self, board, update=True):
         """Method to make a move."""
