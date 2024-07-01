@@ -6,9 +6,6 @@ class Player():
     
     def __init__(self, color):
         self.color = color
-        self.pieces = []
-        self.captured_pieces = []
-        self.is_currently_playing = False
 
     def make_move(self, board):
         """Abstract method to be implemented by subclasses to make a move."""
