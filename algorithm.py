@@ -7,9 +7,9 @@ import pieces
 
 class GameAI:
     
-    def __init__(self, model, view, color, enemy):
+    def __init__(self, board, view, color, enemy):
         
-        self.model = model
+        self.board = board
         self.view = view
         self.color = color
         self.enemy = enemy
@@ -17,18 +17,18 @@ class GameAI:
     def alpha_beta(self, state, depth, alpha, beta, ai_playing):
         
         # calcs the score of the current board
-        if depth == 0 or not self.model.check_for_king():
+        if depth == 0 or not self.board.check_for_king():
             return self.calculate_board_value(state)
 
         if ai_playing:
             ai_value = -math.inf
-            self.model.currently_playing = "White"
+            self.board.currently_playing = "White"
             # calcs the score of every possible move
             for next_move in self.get_possible_moves(self.enemy, state):
 
                 x_move, y_move = next_move
 
-                temp = self.model.get_copy_board_state(state)
+                temp = self.board.get_copy_board_state(state)
 
                 change_position = None
 
@@ -47,7 +47,7 @@ class GameAI:
                 if change_position is not None:
                     temp[y_move].position = change_position
 
-                self.model.currently_playing = "Black"
+                self.board.currently_playing = "Black"
 
                 # White want the score as high as possible
                 ai_value = max(ai_value, value)
@@ -58,12 +58,12 @@ class GameAI:
             return ai_value
 
         player_value = math.inf
-        self.model.currently_playing = "Black"
+        self.board.currently_playing = "Black"
         for next_move in self.get_possible_moves(self.color, state):
 
             x_move, y_move = next_move
 
-            temp = self.model.get_copy_board_state(state)
+            temp = self.board.get_copy_board_state(state)
 
             change_position = None
 
@@ -188,7 +188,7 @@ class GameAI:
 
         for next_move in moves:
 
-            temp = self.model.get_copy_board_state(state)
+            temp = self.board.get_copy_board_state(state)
 
             x_move, y_move = next_move
             change_position = None
@@ -215,7 +215,7 @@ class GameAI:
 
     def move(self):
        
-        state = self.model.get_copy_board_state()
+        state = self.board.get_copy_board_state()
         possible_moves = self.get_possible_moves(self.color, state)
         result = []
 
@@ -248,4 +248,4 @@ class GameAI:
         same_score.sort()
         x_move, y_move = same_score[0][0]
         output.close()
-        self.model.move_piece(x_move, y_move)
+        self.board.move_piece(x_move, y_move)

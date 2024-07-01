@@ -1,4 +1,3 @@
-from algorithm import GameAI
 import sys
 import os
 from pathlib import Path
@@ -17,7 +16,6 @@ class GameManager:
         self.ai = None
         self.player_white = None
         self.player_black = None
-        self.user_ai = None
         self.load_game = False
 
     def get_after_game_choice(self):
@@ -41,15 +39,14 @@ class GameManager:
             num_player = GameView.input_prompt('Enter number of players [1-2]: ')
             if num_player == '1':
                 self.board.ai = True
-                self.player_white = HumanPlayer('White')
-                self.player_black = ComputerPlayer('Black')
-                # self.user_ai = GameAI(self.model, self.view, "Black", "White")
+                self.player_white = HumanPlayer('White', self.view)
+                self.player_black = ComputerPlayer('Black', self.board, self.view, 'White')
                 self.board.show_symbols = self.get_symbol_preference()
                 self.start_game()
             elif num_player == '2':
                 self.board.ai = False
-                self.player_white = HumanPlayer('White')
-                self.player_black = HumanPlayer('Black')
+                self.player_white = HumanPlayer('White', self.view)
+                self.player_black = HumanPlayer('Black', self.view)
                 self.board.show_symbols = self.get_symbol_preference()
                 self.start_game()
             else:
@@ -83,7 +80,7 @@ class GameManager:
         if self.board.ai:
             while self.board.check_for_king():
                 if self.board.currently_playing == 'Black':
-                    self.user_ai.move()
+                    self.player_black.make_move()
                 else:
                     self.get_input()
         else:
@@ -209,7 +206,7 @@ class GameManager:
                 self.board.currently_playing = GameSave['currently_playing']
                 self.board.show_symbols = GameSave['show_symbols']
                 self.load_game = True
-                self.user_ai = GameAI(self.board, self.view, "Black", "White")
+                self.player_black = ComputerPlayer('Black', self.board, self.view, 'White')
 
                 if 'Ai' in GameSave:
                     self.ai = True

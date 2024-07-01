@@ -1,4 +1,5 @@
 from view import GameView
+from algorithm import GameAI
 
 
 class Player():
@@ -16,14 +17,14 @@ class Player():
 
 class HumanPlayer(Player):
     
-    def __init__(self, color):
+    def __init__(self, color, view):
         super().__init__(color)
-        self.is_currently_playing = False
+        self.view = view
 
     def make_move(self, start_pos, goal_pos, board, update=True):
         """Method to make a move."""
         piece = board.board_state[start_pos]
-        if piece and piece.colour == self.currently_playing:
+        if piece and piece.colour == self.color:
             if piece.check_legal_move(goal_pos):
                 board.update_positions(piece, start_pos, goal_pos, update)
                 board.toggle_player()
@@ -39,10 +40,13 @@ class HumanPlayer(Player):
 
 class ComputerPlayer(Player):
 
-    def __init__(self, color):
+    def __init__(self, color, board, view, enemy):
         super().__init__(color)
         self.is_currently_playing = False
+        self.game_ai = GameAI(board, view, color, enemy)
+        self.view = view
 
-    def make_move(self, board):
+    def make_move(self):
         """Method to make a move."""
-        pass
+        self.game_ai.move()
+        self.view.update_board()
