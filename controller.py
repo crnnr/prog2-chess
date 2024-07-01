@@ -155,7 +155,7 @@ class GameManager:
 
     def list_saved_games(self):
         """List all saved games in the saved_games directory."""
-        saved_games_dir = 'saved_games'
+        saved_games_dir = 'SavedGames'
         saved_games = os.listdir(saved_games_dir)
         if len(saved_games == 0):
             GameView.display_message('No saved games found!')
