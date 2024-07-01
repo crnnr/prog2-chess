@@ -46,7 +46,20 @@ class ComputerPlayer(Player):
         self.game_ai = GameAI(board, view, color, enemy)
         self.view = view
 
-    def make_move(self):
+    def make_move(self, board, update=True):
         """Method to make a move."""
-        self.game_ai.move()
-        self.view.update_board()
+        start_pos, goal_pos = self.game_ai.move()
+
+        piece = board.board_state[start_pos]
+        if piece and piece.colour == self.color:
+            if piece.check_legal_move(goal_pos):
+                board.update_positions(piece, start_pos, goal_pos, update)
+                board.toggle_player()
+            else:
+                GameView.display_message('Illegal move! Please try again!')
+                self.game_manager.get_input()
+        else:
+            GameView.display_message('There is no piece of your color on this space. Please try again!')
+            self.game_manager.get_input()
+        if update:
+            self.view.update_board()

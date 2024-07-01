@@ -248,4 +248,4 @@ class GameAI:
         same_score.sort()
         x_move, y_move = same_score[0][0]
         output.close()
-        self.board.move_piece(x_move, y_move)
+        return x_move, y_move

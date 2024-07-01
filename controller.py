@@ -80,7 +80,7 @@ class GameManager:
         if self.board.ai:
             while self.board.check_for_king():
                 if self.board.currently_playing == 'Black':
-                    self.player_black.make_move()
+                    self.player_black.make_move(self.board)
                 else:
                     self.get_input()
         else:
