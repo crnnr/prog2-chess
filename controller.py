@@ -39,14 +39,14 @@ class GameManager:
             num_player = GameView.input_prompt('Enter number of players [1-2]: ')
             if num_player == '1':
                 self.ai = True
-                self.player_white = HumanPlayer('White', self.view)
-                self.player_black = ComputerPlayer('Black', self.board, self.view, 'White')
+                self.player_white = HumanPlayer('White', self.view, self)
+                self.player_black = ComputerPlayer('Black', self.board, self.view, 'White', self)
                 self.board.show_symbols = self.get_symbol_preference()
                 self.start_game()
             elif num_player == '2':
                 self.ai = False
-                self.player_white = HumanPlayer('White', self.view)
-                self.player_black = HumanPlayer('Black', self.view)
+                self.player_white = HumanPlayer('White', self.view, self)
+                self.player_black = HumanPlayer('Black', self.view, self)
                 self.board.show_symbols = self.get_symbol_preference()
                 self.start_game()
             else:
