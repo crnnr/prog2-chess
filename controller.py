@@ -38,13 +38,13 @@ class GameManager:
         if selection == '1':
             num_player = GameView.input_prompt('Enter number of players [1-2]: ')
             if num_player == '1':
-                self.board.ai = True
+                self.ai = True
                 self.player_white = HumanPlayer('White', self.view)
                 self.player_black = ComputerPlayer('Black', self.board, self.view, 'White')
                 self.board.show_symbols = self.get_symbol_preference()
                 self.start_game()
             elif num_player == '2':
-                self.board.ai = False
+                self.ai = False
                 self.player_white = HumanPlayer('White', self.view)
                 self.player_black = HumanPlayer('Black', self.view)
                 self.board.show_symbols = self.get_symbol_preference()
@@ -77,7 +77,7 @@ class GameManager:
         self.view.update_board()
         self.get_input()
 
-        if self.board.ai:
+        if self.ai:
             while self.board.check_for_king():
                 if self.board.currently_playing == 'Black':
                     self.player_black.make_move(self.board)
@@ -128,19 +128,19 @@ class GameManager:
             columns = ['1', '2', '3', '4', '5', '6', '7', '8']
             start_pos = choice[:2]
             goal_pos = choice[-2:]
-            if self.ai == False:
-                if self.board.currently_playing == 'White':
-                    if start_pos[0] in lines and goal_pos[0] in lines and start_pos[1] in columns and goal_pos[1] in columns:
+            if self.board.currently_playing == 'White':
+                if start_pos[0] in lines and goal_pos[0] in lines and start_pos[1] in columns and goal_pos[1] in columns:
                         self.player_white.make_move(self.board.correlation[start_pos], self.board.correlation[goal_pos], self.board)
-                    else:
-                        GameView.display_message('Invalid Choice')
-                        self.get_input()
                 else:
-                    if start_pos[0] in lines and goal_pos[0] in lines and start_pos[1] in columns and goal_pos[1] in columns:
-                        self.player_black.make_move(self.board.correlation[start_pos], self.board.correlation[goal_pos], self.board)
-                    else:
                         GameView.display_message('Invalid Choice')
                         self.get_input()
+            elif self.board.currently_playing == 'Black' and self.ai == False:
+                if start_pos[0] in lines and goal_pos[0] in lines and start_pos[1] in columns and goal_pos[1] in columns:
+                    self.player_black.make_move(self.board.correlation[start_pos], self.board.correlation[goal_pos], self.board)
+                else:
+                    GameView.display_message('Invalid Choice')
+                    self.get_input()
+
     @staticmethod
     def get_symbol_preference():
         
@@ -182,7 +182,7 @@ class GameManager:
             'currently_playing': self.board.currently_playing,
             'show_symbols': self.board.show_symbols,
             'board_state': {str(i): self.piece_to_dict(self.board.board_state[i]) for i in range(64)},
-            'ai': self.board.ai
+            'ai': self.ai
         }
 
         try:
@@ -217,7 +217,6 @@ class GameManager:
 
                 if 'Ai' in GameSave:
                     self.ai = True
-                    self.board.ai = True
 
                 for i in range(64):
                     # If the piece is None, the position is empty
