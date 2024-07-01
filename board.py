@@ -6,6 +6,11 @@ class GameBoard:
 
     def __init__(self):
         self.board_state = [None] * 64
+        self.show_symbols = True
+        self.correlation = {f"{chr(65 + col)}{8 - row}": row * 8 + col for row in range(8) for col in range(8)}
+        self.pieces = []
+        self.currently_playing = 'White'
+        self.set_initial_pieces()
 
     def set_initial_pieces(self):
        """Set the initial pieces on the board"""
@@ -32,6 +37,12 @@ class GameBoard:
         if killed_piece:
             self.pieces.remove(killed_piece)
         piece.moved = True
+
+    def toggle_player(self):
+        if self.currently_playing == 'White':
+            self.currently_playing = 'Black'
+        else:
+            self.currently_playing = 'White'
 
     def check_for_king(self):
         """Check if the king is alive on the board"""

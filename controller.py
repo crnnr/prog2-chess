@@ -10,7 +10,7 @@ import json
 class GameManager:
    
     def __init__(self, view):
-        self.model = None
+        self.board = None
         self.view = view
         self.ai = None
         self.user_ai = None
@@ -36,13 +36,13 @@ class GameManager:
         if selection == '1':
             num_player = input('Enter number of players [1-2]: ')
             if num_player == '1':
-                self.model.ai = True
+                self.board.ai = True
                 self.user_ai = GameAI(self.model, self.view, "Black", "White")
-                self.model.show_symbols = self.get_symbol_preference()
+                self.board.show_symbols = self.get_symbol_preference()
                 self.start_game()
             elif num_player == '2':
-                self.model.ai = False
-                self.model.show_symbols = self.get_symbol_preference()
+                self.board.ai = False
+                self.board.show_symbols = self.get_symbol_preference()
                 self.start_game()
             else:
                 print('Your choice is not valid! Please try again!')
@@ -52,7 +52,7 @@ class GameManager:
             pass                # game loading stuff goes here i guess
 
         elif selection == '3':
-            self.model.view.clear_console()
+            self.view.clear_console()
             sys.exit()
 
         else:

@@ -54,6 +54,14 @@ class GameView:
         return '  \u255A' + '\u2550\u2550\u2550\u2569' * 7 + '\u2550\u2550\u2550\u255D'
 
     @staticmethod
+    def display_message(message):
+        print(message)
+
+    @staticmethod
+    def input_prompt(message):
+        return input(message)
+
+    @staticmethod
     def clear_console():
         """
         Clear the console of unnecessary stuff
