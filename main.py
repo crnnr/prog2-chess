@@ -1,8 +1,7 @@
-
-from model import Model
+from board import GameBoard
 
 if __name__ == "__main__":
-    model = Model()
-    model.game_manager.model = model
-    model.view.model = model
-    model.view.print_menu()
+    board = GameBoard()
+    board.game_manager.board = board
+    board.view.model = board
+    board.view.print_menu()

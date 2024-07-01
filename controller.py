@@ -3,9 +3,11 @@ import sys
 import os
 from pathlib import Path
 import datetime
+import json
 from view import GameView
 from pieces import *
-import json
+from player import HumanPlayer, ComputerPlayer
+
 
 class GameManager:
    
@@ -13,6 +15,8 @@ class GameManager:
         self.board = None
         self.view = view
         self.ai = None
+        self.player_white = None
+        self.player_black = None
         self.user_ai = None
         self.load_game = False
 
@@ -34,22 +38,27 @@ class GameManager:
         selection = input('Please enter the number that corresponds to your desired menu: ')
 
         if selection == '1':
-            num_player = input('Enter number of players [1-2]: ')
+            num_player = GameView.input_prompt('Enter number of players [1-2]: ')
             if num_player == '1':
                 self.board.ai = True
-                self.user_ai = GameAI(self.model, self.view, "Black", "White")
+                self.player_white = HumanPlayer('White')
+                self.player_black = ComputerPlayer('Black')
+                # self.user_ai = GameAI(self.model, self.view, "Black", "White")
                 self.board.show_symbols = self.get_symbol_preference()
                 self.start_game()
             elif num_player == '2':
                 self.board.ai = False
+                self.player_white = HumanPlayer('White')
+                self.player_black = HumanPlayer('Black')
                 self.board.show_symbols = self.get_symbol_preference()
                 self.start_game()
             else:
-                print('Your choice is not valid! Please try again!')
+                GameView.display_message('Your choice is not valid! Please try again!')
                 self.get_menu_choice()
 
         elif selection == '2':
-            pass                # game loading stuff goes here i guess
+            self.load_gamestate()
+            self.start_game()
 
         elif selection == '3':
             self.view.clear_console()
@@ -123,7 +132,7 @@ class GameManager:
             start_pos = choice[:2]
             goal_pos = choice[-2:]
             if start_pos[0] in lines and goal_pos[0] in lines and start_pos[1] in columns and goal_pos[1] in columns:
-                self.board.move_piece(self.board.correlation[start_pos], self.board.correlation[goal_pos])
+                self.player_white.make_move(self.board.correlation[start_pos], self.board.correlation[goal_pos])
             else:
                 GameView.display_message('Invalid Choice')
                 self.get_input()
@@ -200,7 +209,7 @@ class GameManager:
                 self.board.currently_playing = GameSave['currently_playing']
                 self.board.show_symbols = GameSave['show_symbols']
                 self.load_game = True
-                self.user_ai = GameAI(self.model, self.view, "Black", "White")
+                self.user_ai = GameAI(self.board, self.view, "Black", "White")
 
                 if 'Ai' in GameSave:
                     self.ai = True

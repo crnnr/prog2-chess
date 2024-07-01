@@ -1,5 +1,7 @@
 from player import HumanPlayer, ComputerPlayer
 from pieces import Rook, Knight, Bishop, Queen, King, Pawn
+from view import GameView
+from controller import GameManager
 
 class GameBoard:
     """Class that handles the game board"""
@@ -7,9 +9,12 @@ class GameBoard:
     def __init__(self):
         self.board_state = [None] * 64
         self.show_symbols = True
+        self.view = GameView()
+        self.game_manager = GameManager(self.view)
         self.correlation = {f"{chr(65 + col)}{8 - row}": row * 8 + col for row in range(8) for col in range(8)}
         self.pieces = []
         self.currently_playing = 'White'
+        self.show_symbols = True
         self.set_initial_pieces()
 
     def set_initial_pieces(self):
