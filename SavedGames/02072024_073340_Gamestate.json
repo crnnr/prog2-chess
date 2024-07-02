@@ -1,0 +1,423 @@
+{
+    "currently_playing": "White",
+    "show_symbols": true,
+    "board_state": {
+        "0": {
+            "piece": "Rook",
+            "colour": "Black",
+            "moved": false,
+            "position": 0
+        },
+        "1": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "2": {
+            "piece": "Bishop",
+            "colour": "Black",
+            "moved": false,
+            "position": 2
+        },
+        "3": {
+            "piece": "Queen",
+            "colour": "Black",
+            "moved": false,
+            "position": 3
+        },
+        "4": {
+            "piece": "King",
+            "colour": "Black",
+            "moved": false,
+            "position": 4
+        },
+        "5": {
+            "piece": "Bishop",
+            "colour": "Black",
+            "moved": false,
+            "position": 5
+        },
+        "6": {
+            "piece": "Knight",
+            "colour": "Black",
+            "moved": false,
+            "position": 6
+        },
+        "7": {
+            "piece": "Rook",
+            "colour": "Black",
+            "moved": false,
+            "position": 7
+        },
+        "8": {
+            "piece": "Pawn",
+            "colour": "Black",
+            "moved": false,
+            "position": 8
+        },
+        "9": {
+            "piece": "Pawn",
+            "colour": "Black",
+            "moved": false,
+            "position": 9
+        },
+        "10": {
+            "piece": "Pawn",
+            "colour": "Black",
+            "moved": false,
+            "position": 10
+        },
+        "11": {
+            "piece": "Pawn",
+            "colour": "Black",
+            "moved": false,
+            "position": 11
+        },
+        "12": {
+            "piece": "Pawn",
+            "colour": "Black",
+            "moved": false,
+            "position": 12
+        },
+        "13": {
+            "piece": "Pawn",
+            "colour": "Black",
+            "moved": false,
+            "position": 13
+        },
+        "14": {
+            "piece": "Pawn",
+            "colour": "Black",
+            "moved": false,
+            "position": 14
+        },
+        "15": {
+            "piece": "Pawn",
+            "colour": "Black",
+            "moved": false,
+            "position": 15
+        },
+        "16": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "17": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "18": {
+            "piece": "Knight",
+            "colour": "Black",
+            "moved": true,
+            "position": 18
+        },
+        "19": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "20": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "21": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "22": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "23": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "24": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "25": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "26": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "27": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "28": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "29": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "30": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "31": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "32": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "33": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "34": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "35": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "36": {
+            "piece": "Pawn",
+            "colour": "White",
+            "moved": true,
+            "position": 36
+        },
+        "37": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "38": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "39": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "40": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "41": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "42": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "43": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "44": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "45": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "46": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "47": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "48": {
+            "piece": "Pawn",
+            "colour": "White",
+            "moved": false,
+            "position": 48
+        },
+        "49": {
+            "piece": "Pawn",
+            "colour": "White",
+            "moved": false,
+            "position": 49
+        },
+        "50": {
+            "piece": "Pawn",
+            "colour": "White",
+            "moved": false,
+            "position": 50
+        },
+        "51": {
+            "piece": "Pawn",
+            "colour": "White",
+            "moved": false,
+            "position": 51
+        },
+        "52": {
+            "piece": null,
+            "symbol": null,
+            "colour": null,
+            "moved": null,
+            "position": null
+        },
+        "53": {
+            "piece": "Pawn",
+            "colour": "White",
+            "moved": false,
+            "position": 53
+        },
+        "54": {
+            "piece": "Pawn",
+            "colour": "White",
+            "moved": false,
+            "position": 54
+        },
+        "55": {
+            "piece": "Pawn",
+            "colour": "White",
+            "moved": false,
+            "position": 55
+        },
+        "56": {
+            "piece": "Rook",
+            "colour": "White",
+            "moved": false,
+            "position": 56
+        },
+        "57": {
+            "piece": "Knight",
+            "colour": "White",
+            "moved": false,
+            "position": 57
+        },
+        "58": {
+            "piece": "Bishop",
+            "colour": "White",
+            "moved": false,
+            "position": 58
+        },
+        "59": {
+            "piece": "Queen",
+            "colour": "White",
+            "moved": false,
+            "position": 59
+        },
+        "60": {
+            "piece": "King",
+            "colour": "White",
+            "moved": false,
+            "position": 60
+        },
+        "61": {
+            "piece": "Bishop",
+            "colour": "White",
+            "moved": false,
+            "position": 61
+        },
+        "62": {
+            "piece": "Knight",
+            "colour": "White",
+            "moved": false,
+            "position": 62
+        },
+        "63": {
+            "piece": "Rook",
+            "colour": "White",
+            "moved": false,
+            "position": 63
+        }
+    },
+    "ai": true
+}

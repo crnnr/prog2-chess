@@ -155,42 +155,40 @@ class GameManager:
 
     def list_saved_games(self):
         """List all saved games in the saved_games directory."""
-        saved_games_dir = 'SavedGames'
-        saved_games = os.listdir(saved_games_dir)
+        saved_games_dir = Path.cwd() / 'SavedGames'
+        saved_games = list(saved_games_dir.glob('*.json'))
         if not saved_games:
-            GameView.display_message('No saved games found!')
-        else:
-            for game in saved_games:
-                GameView.display_message(game)
-            return saved_games
+            print("No saved games found.")
+            return None
+        for index, game_file in enumerate(saved_games, start=1):
+            print(f"{index}) {game_file.name}")
+        return saved_games
         
     def save_gamestate(self):
         """Save the current game state to a file."""
-        save_name = GameView.input_prompt("Please enter a name for the save file: "
-                          "(leave blank for a timestamped filename): ")
-        
-        if not save_name:
-            save_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".json"
-        else:
-            if not save_name.endswith(".json"):
-                save_name += ".json"
-        #OS independent path
-        filename = Path("saved_games", save_name)
-        self.create_directory_if_not_exists()
-        
-        gamestate = {
+        GameSave = {
             'currently_playing': self.board.currently_playing,
             'show_symbols': self.board.show_symbols,
             'board_state': {str(i): self.piece_to_dict(self.board.board_state[i]) for i in range(64)},
             'ai': self.ai
         }
 
+        # Ensure the 'SavedGames' folder exists
+        saved_games_dir = Path.cwd() / 'SavedGames'
+        saved_games_dir.mkdir(exist_ok=True)
+
+        # Generate a detailed timestamped filename
+        timestamp = datetime.now().strftime('%d%m%Y_%H%M%S')
+        file_name = f"{timestamp}_Gamestate.json"
+        file_path = saved_games_dir / file_name
+
         try:
-            with open(filename, 'w', encoding='utf-8') as file:
-                json.dump(gamestate, file, indent=4)
-                GameView.display_message(f"Game saved as {filename}")
+            with file_path.open("w") as json_file:
+                json.dump(GameSave, json_file, indent=4)
+            print("Game saved successfully!")
         except IOError as e:
-            GameView.display_message(f"Failed to save game: {e}")
+            print(f"Failed to save game: {e}")
+            json.dump(GameSave, json_file)
 
     def piece_to_dict(self, piece):
         
