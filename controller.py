@@ -222,10 +222,15 @@ class GameManager:
                 self.board.currently_playing = GameSave['currently_playing']
                 self.board.show_symbols = GameSave['show_symbols']
                 self.load_game = True
-                self.player_black = ComputerPlayer('Black', self.board, self.view, 'White', self)
+                self.player_white = HumanPlayer('White', self.view, self)
+                
 
                 if 'Ai' in GameSave:
                     self.ai = True
+                    self.player_black = ComputerPlayer('Black', self.board, self.view, 'White', self)
+                else:
+                    self.ai = False
+                    self.player_black = HumanPlayer('Black', self.view, self)
 
                 for i in range(64):
                     # If the piece is None, the position is empty
@@ -233,22 +238,22 @@ class GameManager:
                         self.board.board_state[i] = None
                     else:
                         # If the piece is not None, create a new piece object
-                        if GameSave['board_state'][str(i)]['piece'] == 'Rooks':
+                        if GameSave['board_state'][str(i)]['piece'] == 'Rook':
                             self.board.board_state[i] = Rook(GameSave['board_state'][str(i)]['colour'],
                                                              i, self.board)
-                        if GameSave['board_state'][str(i)]['piece'] == 'Knights':
+                        if GameSave['board_state'][str(i)]['piece'] == 'Knight':
                             self.board.board_state[i] = Knight(GameSave['board_state'][str(i)]['colour'],
                                                               i, self.board)
-                        if GameSave['board_state'][str(i)]['piece'] == 'Bishops':
+                        if GameSave['board_state'][str(i)]['piece'] == 'Bishop':
                             self.board.board_state[i] = Bishop(GameSave['board_state'][str(i)]['colour'],
                                                                i, self.board)
-                        if GameSave['board_state'][str(i)]['piece'] == 'Queens':
+                        if GameSave['board_state'][str(i)]['piece'] == 'Queen':
                             self.board.board_state[i] = Queen(GameSave['board_state'][str(i)]['colour'],
                                                               i, self.board)
-                        if GameSave['board_state'][str(i)]['piece'] == 'Kings':
+                        if GameSave['board_state'][str(i)]['piece'] == 'King':
                             self.board.board_state[i] = King(GameSave['board_state'][str(i)]['colour'],
                                                              i, self.board)
-                        if GameSave['board_state'][str(i)]['piece'] == 'Pawns':
+                        if GameSave['board_state'][str(i)]['piece'] == 'Pawn':
                             self.board.board_state[i] = Pawn(GameSave['board_state'][str(i)]['colour'],
                                                              i, self.board)
                 
