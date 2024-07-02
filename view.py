@@ -73,6 +73,7 @@ class GameView:
         os.system(command)
 
     def print_menu(self):
+        self.clear_console()
         print(""" 
   ██████╗██╗  ██╗███████╗███████╗███████╗
  ██╔════╝██║  ██║██╔════╝██╔════╝██╔════╝
