@@ -1,11 +1,21 @@
 from player import HumanPlayer, ComputerPlayer
 from pieces import Rook, Knight, Bishop, Queen, King, Pawn
+from view import GameView
+from controller import GameManager
 
 class GameBoard:
     """Class that handles the game board"""
 
     def __init__(self):
         self.board_state = [None] * 64
+        self.show_symbols = True
+        self.view = GameView()
+        self.game_manager = GameManager(self.view)
+        self.correlation = {f"{chr(65 + col)}{8 - row}": row * 8 + col for row in range(8) for col in range(8)}
+        self.pieces = []
+        self.currently_playing = 'White'
+        self.show_symbols = True
+        self.set_initial_pieces()
 
     def set_initial_pieces(self):
        """Set the initial pieces on the board"""
@@ -22,7 +32,7 @@ class GameBoard:
            self.board_state[pos] = None
        self.pieces = [piece for piece in self.board_state if piece is not None]
 
-    def _update_positions(self, piece, start_pos, goal_pos, update):
+    def update_positions(self, piece, start_pos, goal_pos, update):
         """Update the positions of the pieces on the board"""
         killed_piece = self.board_state[goal_pos]
         self.board_state[goal_pos], self.board_state[start_pos] = piece, None
@@ -32,6 +42,12 @@ class GameBoard:
         if killed_piece:
             self.pieces.remove(killed_piece)
         piece.moved = True
+
+    def toggle_player(self):
+        if self.currently_playing == 'White':
+            self.currently_playing = 'Black'
+        else:
+            self.currently_playing = 'White'
 
     def check_for_king(self):
         """Check if the king is alive on the board"""

@@ -3,15 +3,15 @@ import os
 class GameView:
 
     def __init__(self):
-        self.model = None
+        self.board = None
         self.last_board = None
 
     def update_board(self, state=None):
         self.clear_console()
-        state = state or self.model.board_state
-        print(f'Current turn: {self.model.currently_playing}\n')
+        state = state or self.board.board_state
+        print(f'Current turn: {self.board.currently_playing}\n')
         self.print_board(state)
-        self.last_board = self.model.get_copy_board_state()
+        self.last_board = self.board.get_copy_board_state()
 
     def print_board(self, state):
         header = '    ' + '   '.join(' A B C D E F G H'.split())
@@ -54,6 +54,14 @@ class GameView:
         return '  \u255A' + '\u2550\u2550\u2550\u2569' * 7 + '\u2550\u2550\u2550\u255D'
 
     @staticmethod
+    def display_message(message):
+        print(message)
+
+    @staticmethod
+    def input_prompt(message):
+        return input(message)
+
+    @staticmethod
     def clear_console():
         """
         Clear the console of unnecessary stuff
@@ -65,13 +73,14 @@ class GameView:
         os.system(command)
 
     def print_menu(self):
+        self.clear_console()
         print(""" 
   ██████╗██╗  ██╗███████╗███████╗███████╗
  ██╔════╝██║  ██║██╔════╝██╔════╝██╔════╝
  ██║     ███████║█████╗  ███████╗███████╗
  ██║     ██╔══██║██╔══╝  ╚════██║╚════██║
  ╚██████╗██║  ██║███████╗███████║███████║
-  ╚═════╝╚═╝  ╚══════╝╚══════╝╚══════╝
+  ╚═════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
       by Christof & Manuel                                 
 """)
         print("""      Welcome to Chess:
@@ -79,4 +88,4 @@ class GameView:
       2) Load Game
       3) Exit
 """)
-        self.model.game_manager.get_menu_choice()
+        self.board.game_manager.get_menu_choice()

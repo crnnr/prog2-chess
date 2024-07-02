@@ -5,7 +5,7 @@ import math
 class Piece(metaclass=ABCMeta):
 
     def __init__(self):
-        self.model = None
+        self.board = None
         self.symbol = None
         self.colour = None
         self.moved = False
@@ -18,7 +18,7 @@ class Piece(metaclass=ABCMeta):
     def check_occupied_friendly(self, position, state):
         if position in range(64):
             if state[position] is not None:
-                if state[position].colour == self.model.currently_playing:
+                if state[position].colour == self.board.currently_playing:
                     return True
                 else:
                     return False
@@ -30,7 +30,7 @@ class Piece(metaclass=ABCMeta):
     def check_occupied_hostile(self, position, state):
         if position in range(64):
             if state[position] is not None:
-                if state[position].colour != self.model.currently_playing:
+                if state[position].colour != self.board.currently_playing:
                     return True
                 else:
                     return False
@@ -230,9 +230,9 @@ class Piece(metaclass=ABCMeta):
 
 class Rook(Piece):
 
-    def __init__(self, colour, position, model):
+    def __init__(self, colour, position, board):
         Piece.__init__(self)
-        self.model = model
+        self.board = board
         self.colour = colour
         self.symbol = self.set_symbol()
         self.position = position
@@ -248,7 +248,7 @@ class Rook(Piece):
         ]
 
     def set_symbol(self):
-        if self.model.show_symbols:
+        if self.board.show_symbols:
             if self.colour == 'White':
                 return '\u2656'
             else:
@@ -261,7 +261,7 @@ class Rook(Piece):
 
     def check_legal_move(self, position, state="", return_all=False):
         if state == "":
-            state = self.model.board_state
+            state = self.board.board_state
 
         allowed = self.check_linear(state)
 
@@ -275,9 +275,9 @@ class Rook(Piece):
 
 class Knight(Piece):
 
-    def __init__(self, colour, position, model):
+    def __init__(self, colour, position, board):
         Piece.__init__(self)
-        self.model = model
+        self.board = board
         self.colour = colour
         self.symbol = self.set_symbol()
         self.position = position
@@ -294,7 +294,7 @@ class Knight(Piece):
         ]
 
     def set_symbol(self):
-        if self.model.show_symbols:
+        if self.board.show_symbols:
             if self.colour == 'White':
                 return '\u2658'
             else:
@@ -309,7 +309,7 @@ class Knight(Piece):
         allowed = []
 
         if state == "":
-            state = self.model.board_state
+            state = self.board.board_state
 
         row = math.floor(self.position / 8)
         column = self.position - (row * 7) - row
@@ -341,9 +341,9 @@ class Knight(Piece):
 
 class Bishop(Piece):
 
-    def __init__(self, colour, position, model):
+    def __init__(self, colour, position, board):
         Piece.__init__(self)
-        self.model = model
+        self.board = board
         self.colour = colour
         self.symbol = self.set_symbol()
         self.position = position
@@ -360,7 +360,7 @@ class Bishop(Piece):
         ]
 
     def set_symbol(self):
-        if self.model.show_symbols:
+        if self.board.show_symbols:
             if self.colour == 'White':
                 return '\u2657'
             else:
@@ -373,7 +373,7 @@ class Bishop(Piece):
 
     def check_legal_move(self, position, state="", return_all=False):
         if state == "":
-            state = self.model.board_state
+            state = self.board.board_state
 
         allowed = self.check_diagonal(state)
 
@@ -387,9 +387,9 @@ class Bishop(Piece):
 
 class Pawn(Piece):
     
-    def __init__(self, colour, position, model):
+    def __init__(self, colour, position, board):
         Piece.__init__(self)
-        self.model = model
+        self.board = board
         self.colour = colour
         self.symbol = self.set_symbol()
         self.position = position
@@ -406,7 +406,7 @@ class Pawn(Piece):
         ]
 
     def set_symbol(self):
-        if self.model.show_symbols:
+        if self.board.show_symbols:
             if self.colour == 'White':
                 return '\u2659'
             else:
@@ -420,7 +420,7 @@ class Pawn(Piece):
     def check_legal_move(self, position, state="", return_all=False):
         allowed = []
         if state == "":
-            state = self.model.board_state
+            state = self.board.board_state
 
         row = math.floor(self.position / 8)
         column = self.position - (row * 7) - row
@@ -471,9 +471,9 @@ class Pawn(Piece):
 
 class Queen(Piece):
     
-    def __init__(self, colour, position, model):
+    def __init__(self, colour, position, board):
         Piece.__init__(self)
-        self.model = model
+        self.board = board
         self.colour = colour
         self.symbol = self.set_symbol()
         self.position = position
@@ -489,7 +489,7 @@ class Queen(Piece):
         ]
 
     def set_symbol(self):
-        if self.model.show_symbols:
+        if self.board.show_symbols:
             if self.colour == 'White':
                 return '\u2655'
             else:
@@ -502,7 +502,7 @@ class Queen(Piece):
 
     def check_legal_move(self, position, state="", return_all=False):
         if state == "":
-            state = self.model.board_state
+            state = self.board.board_state
 
         allowed = self.check_linear(state) + self.check_diagonal(state)
         if return_all:
@@ -515,16 +515,16 @@ class Queen(Piece):
 
 class King(Piece):
     
-    def __init__(self, colour, position, model):
+    def __init__(self, colour, position, board):
         Piece.__init__(self)
-        self.model = model
+        self.board = board
         self.colour = colour
         self.symbol = self.set_symbol()
         self.position = position
         self.moved = False
 
     def set_symbol(self):
-        if self.model.show_symbols:
+        if self.board.show_symbols:
             if self.colour == 'White':
                 return '\u2654'
             else:
@@ -539,7 +539,7 @@ class King(Piece):
         allowed = []
 
         if state == "":
-            state = self.model.board_state
+            state = self.board.board_state
 
         if not self.check_occupied_friendly(self.position - 9, state):
             allowed.append(self.position - 9)
