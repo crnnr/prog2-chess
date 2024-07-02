@@ -177,9 +177,16 @@ class GameManager:
         saved_games_dir = Path.cwd() / 'SavedGames'
         saved_games_dir.mkdir(exist_ok=True)
 
-        # Generate a detailed timestamped filename
-        timestamp = datetime.now().strftime('%d%m%Y_%H%M%S')
-        file_name = f"{timestamp}_Gamestate.json"
+        file_name = GameView.input_prompt("Enter a name for your save"
+                          "(leave blank to use the current datetime): ")
+        if not file_name:
+            # Generate a detailed timestamped filename
+            timestamp = datetime.now().strftime('%d%m%Y_%H%M%S')
+            file_name = f"{timestamp}_Gamestate.json"
+        else:
+            if not file_name.endswith('.json'):
+                file_name += ".json"
+        
         file_path = saved_games_dir / file_name
 
         try:
