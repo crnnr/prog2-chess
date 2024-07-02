@@ -222,7 +222,7 @@ class GameManager:
                 self.board.currently_playing = GameSave['currently_playing']
                 self.board.show_symbols = GameSave['show_symbols']
                 self.load_game = True
-                self.player_black = ComputerPlayer('Black', self.board, self.view, 'White')
+                self.player_black = ComputerPlayer('Black', self.board, self.view, 'White', self)
 
                 if 'Ai' in GameSave:
                     self.ai = True
